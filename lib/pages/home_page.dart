@@ -1,12 +1,22 @@
 import 'package:buscador_gif_aula/repositories/repositorio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:buscador_gif_aula/repositories/repositorio.dart';
+import '';
 
+class HomePage extends StatefulWidget {
+  HomePage({super.key});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class _HomePageState extends State<HomePage> {
+  Repositorio rep = Repositorio();
 
+  late Future<Map> gifs;
 
+  TextEditingController controlerBusca = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -18,10 +28,29 @@ class HomePage extends StatelessWidget {
       body: Column(
         children: [
           TextField(
-            decoration: InputDecoration(
-                labelText: "Digite sua pesquisa"),
+            decoration: InputDecoration(labelText: "Digite sua pesquisa"),
+            controller: controlerBusca,
+            onSubmitted: (text) {
+              gifs = rep.buscarDados(text);
+              print(gifs);
+            },
           ),
-          Container(),
+          Expanded(
+            child: GridView.builder(
+                padding: EdgeInsets.all(10.0),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 10.0,
+                    mainAxisSpacing: 10.0),
+                itemCount: 10,
+                itemBuilder: (context, index) {
+                    return GestureDetector(
+                      child: Icon(Icons.person, size: 200.0,),
+                      onTap: (){},
+                    );
+                }),
+
+          )
         ],
       ),
     );
