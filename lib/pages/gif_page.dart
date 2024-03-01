@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+//import 'package:share_plus/share_plus.dart';
+import 'package:share/share.dart';
 
 class GifPage extends StatelessWidget {
   GifPage(this._dadosGif, {super.key});
@@ -10,17 +12,17 @@ class GifPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(_dadosGif["title"]),
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.purple,
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.share),
             onPressed: () {
-              //Share.share(_gifData["images"]["fixed_height"]["url"]);
+              Share.share(_dadosGif["images"]["fixed_height"]["url"]);
             },
           )
         ],
       ),
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       body: Center(
         child: Image.network(_dadosGif["images"]["fixed_height"]["url"]),
       ),

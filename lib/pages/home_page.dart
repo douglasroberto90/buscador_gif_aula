@@ -1,6 +1,8 @@
 import 'package:buscador_gif_aula/repositories/repositorio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:buscador_gif_aula/pages/gif_page.dart';
+import 'package:share/share.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({super.key});
@@ -19,7 +21,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    gifs=rep.buscarTrending();
+    gifs = rep.buscarTrending();
   }
 
   @override
@@ -53,7 +55,7 @@ class _HomePageState extends State<HomePage> {
                         alignment: Alignment.center,
                         child: CircularProgressIndicator(
                           valueColor:
-                              AlwaysStoppedAnimation<Color>(Colors.black),
+                          AlwaysStoppedAnimation<Color>(Colors.black),
                           strokeWidth: 5.0,
                         ),
                       );
@@ -81,19 +83,30 @@ Widget _criarGridGifs(BuildContext context, AsyncSnapshot snapshot) {
       itemCount: 10,
       itemBuilder: (context, index) {
         return GestureDetector(
-          child: Image.network(snapshot.data["data"][index]["images"]["fixed_height"]
-            ["url"],
-          ),
-          onTap: () {},
+          child: FadeInImage.memoryNetwork(
+              placeholder: kTransparentImage,
+              image: snapshot.data["data"][index]["images"]["fixed_height"]
+              ["url"]),
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) {
+                      return GifPage(snapshot.data["data"][index]);
+                    }
+                )
+            );
+          },
+          onLongPress: (){
+            Share.share(snapshot.data["data"][index]["images"]["fixed_height"]
+            ["url"],);
+          },
         );
       });
 }
 
 /*
-Icon(
-            Icons.person,
-            size: 200.0,
-          ),
+
 
           Navegação
           onTap: () {
@@ -102,5 +115,6 @@ Icon(
                     MaterialPageRoute(
                         builder: (context) =>
                             GifPage(snapshot.data["data"][index])));
+                            }
 
  */
